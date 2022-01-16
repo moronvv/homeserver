@@ -1,0 +1,9 @@
+username: pi
+network_interface: wlan0
+
+packages:
+  - vim
+  - neofetch
+  - htop
+
+output_device: "iec958:CARD=MQA,DEV=0"
