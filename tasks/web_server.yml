@@ -1,0 +1,58 @@
+- name: Install packages
+  package:
+    name:
+      - nginx
+    state: latest
+
+- name: Create "{{ domain_name }}" html directory
+  file:
+    path: "/var/www/{{ domain_name }}/html"
+    state: directory
+  notify: Restart nginx
+
+- name: Set stub html
+  copy:
+    dest: "/var/www/{{ domain_name }}/html/index.html"
+    content: |
+      <html>
+          <head>
+              <title>Hello, world!</title>
+          </head>
+          <body>
+              <h1>Hello, world!</h1>
+          </body>
+      </html>
+  notify: Restart nginx
+
+- name: Set site config
+  copy:
+    dest: "/etc/nginx/sites-available/{{ domain_name }}"
+    content: |
+      server {
+              listen 80;
+              listen [::]:80;
+
+              root /var/www/{{ domain_name }}/html;
+              index index.html index.htm index.nginx-debian.html;
+
+              server_name {{ domain_name }} www.{{ domain_name }};
+
+              location / {
+                      try_files $uri $uri/ =404;
+              }
+      }
+  notify: Restart nginx
+
+- name: Symlink config to sites-enabled
+  file:
+    src: "/etc/nginx/sites-available/{{ domain_name }}"
+    dest: "/etc/nginx/sites-enabled/{{ domain_name }}"
+    state: link
+  notify: Restart nginx
+
+- name: Change hash bucket size
+  lineinfile:
+    dest: /etc/nginx/nginx.conf
+    regexp: '#\s*server_names_hash_bucket_size.*;$'
+    line: "server_names_hash_bucket_size 64;"
+  notify: Restart nginx

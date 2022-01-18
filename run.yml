@@ -4,3 +4,6 @@
   tasks:
     - import_tasks: tasks/essential.yml
     - import_tasks: tasks/spotify.yml
+    - import_tasks: tasks/web_server.yml
+  handlers:
+    - import_tasks: handlers/main.yml

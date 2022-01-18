@@ -1,0 +1,27 @@
+- name: Install autoupdaters
+  package:
+    name:
+      - unattended-upgrades
+      - apt-listchanges
+    state: latest
+
+- name: Set unattended-upgrades file
+  copy:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    content: |
+      Unattended-Upgrade::Origins-Pattern {
+            "origin=Debian,codename=${distro_codename},label=Debian-Security";
+                "origin=TorProject";
+            };
+      Unattended-Upgrade::Package-Blacklist {
+      };
+      Unattended-Upgrade::Automatic-Reboot "true";
+
+- name: Set auto-upgrades file
+  copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::AutocleanInterval "5";
+      APT::Periodic::Unattended-Upgrade "1";
+      APT::Periodic::Verbose "1";

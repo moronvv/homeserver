@@ -1,13 +1,19 @@
+- name: Get installed packages as facts
+  package_facts:
+    manager: auto
+
 - name: Get Raspotify installer
   ansible.builtin.uri:
     url: https://dtcooper.github.io/raspotify/install.sh
     return_content: yes
   register: raspotify_installer
+  when: "'raspotify' not in ansible_facts.packages"
 
 - name: Install Raspotify
   ansible.builtin.shell:
     cmd: sh
     stdin: "{{ raspotify_installer.content }}"
+  when: "'raspotify' not in ansible_facts.packages"
 
 - name: Set username and password
   lineinfile:

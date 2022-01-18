@@ -8,6 +8,25 @@
     name: "{{ packages }}"
     state: latest
 
+- name: Get installed packages as facts
+  package_facts:
+    manager: auto
+
+# install docker
+- name: Get Docker installer
+  uri:
+    url: https://get.docker.com
+    return_content: yes
+  register: docker_installer
+  when: "'docker-ce' not in ansible_facts.packages"
+
+- name: Install Docker
+  shell:
+    cmd: sh
+    stdin: "{{ docker_installer.content }}"
+  when: "'docker-ce' not in ansible_facts.packages"
+###
+
 - name: Disable SSH password auth
   lineinfile:
     dest: /etc/ssh/sshd_config
