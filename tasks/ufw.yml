@@ -1,0 +1,24 @@
+- name: Install UFW
+  package:
+    name:
+      - ufw
+    state: latest
+  register: ufw_installed
+
+- name: Reboot after UFW install
+  reboot:
+  when: ufw_installed.changed
+
+- name: Allow ssh in UFW
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Allow nginx in UFW
+  community.general.ufw:
+    rule: allow
+    name: Nginx Full
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled

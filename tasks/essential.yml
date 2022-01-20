@@ -5,7 +5,12 @@
 
 - name: Install essential packages
   package:
-    name: "{{ packages }}"
+    name:
+      - python3
+      - python3-pip
+      - vim
+      - neofetch
+      - htop
     state: latest
 
 - name: Get installed packages as facts

@@ -3,6 +3,7 @@
   become: yes
   tasks:
     - import_tasks: tasks/essential.yml
+    - import_tasks: tasks/ufw.yml
     - import_tasks: tasks/spotify.yml
     - import_tasks: tasks/web_server.yml
   handlers:
