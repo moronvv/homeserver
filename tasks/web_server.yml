@@ -41,6 +41,7 @@
                       try_files $uri $uri/ =404;
               }
       }
+    force: no
   notify: Restart nginx
 
 - name: Symlink config to sites-enabled

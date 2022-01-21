@@ -34,6 +34,10 @@
         regexp: '^#LIBRESPOT_DEVICE="default"',
         line: 'LIBRESPOT_DEVICE="{{ output_device }}"',
       }
+    - {
+        regexp: '^#LIBRESPOT_ZEROCONF_PORT=""',
+        line: 'LIBRESPOT_ZEROCONF_PORT="4071"',
+      }
   register: raspotify_config
 
 - name: Restart Raspotify daemon

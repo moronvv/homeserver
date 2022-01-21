@@ -19,6 +19,16 @@
     rule: allow
     name: Nginx Full
 
+- name: Allow raspotify control port
+  community.general.ufw:
+    rule: allow
+    port: "4070"
+
+- name: Allow librespot zeroconf port
+  community.general.ufw:
+    rule: allow
+    port: "4071"
+
 - name: Enable UFW
   community.general.ufw:
     state: enabled
