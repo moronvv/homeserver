@@ -1,0 +1,16 @@
+- name: Install certbot
+  package:
+    name:
+      - certbot
+      - python3-certbot-nginx
+    state: latest
+
+- name: Run certbot for nginx
+  command:
+    cmd: "certbot --nginx --non-interactive --agree-tos -m {{ email }} -d {{ domain_name }} -d www.{{ domain_name }}"
+    creates: "/etc/letsencrypt/live/{{ domain_name }}/privkey.pem"
+
+- name: Check certbot timer started
+  service:
+    name: certbot.timer
+    state: started

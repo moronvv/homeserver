@@ -10,9 +10,9 @@
     dest: /etc/apt/apt.conf.d/50unattended-upgrades
     content: |
       Unattended-Upgrade::Origins-Pattern {
-            "origin=Debian,codename=${distro_codename},label=Debian-Security";
-                "origin=TorProject";
-            };
+        "origin=Debian,codename=${distro_codename},label=Debian-Security";
+        "origin=TorProject";
+      };
       Unattended-Upgrade::Package-Blacklist {
       };
       Unattended-Upgrade::Automatic-Reboot "true";
