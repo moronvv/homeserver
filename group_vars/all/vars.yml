@@ -1,9 +1,14 @@
+# general
 username: pi
 network_interface: wlan0
 
-packages:
-  - vim
-  - neofetch
-  - htop
-
+# raspotify
+librespot_bitrate: "320"
+librespot_control_port: "4070"
+librespot_zeroconf_port: "4071"
 output_device: "iec958:CARD=MQA,DEV=0"
+
+# tor
+tor_or_port: "9001"
+tor_dir_port: "9030"
+tor_control_port: "9051"

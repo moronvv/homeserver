@@ -19,15 +19,21 @@
     rule: allow
     name: Nginx Full
 
-- name: Allow raspotify control port
+- name: Allow raspotify ports
   community.general.ufw:
     rule: allow
-    port: "4070"
+    port: "{{ item }}"
+  loop:
+    - "{{ librespot_control_port }}"
+    - "{{ librespot_zeroconf_port }}"
 
-- name: Allow librespot zeroconf port
+- name: Allow tor ports
   community.general.ufw:
     rule: allow
-    port: "4071"
+    port: "{{ item }}"
+  loop:
+    - "{{ tor_or_port }}"
+    - "{{ tor_dir_port }}"
 
 - name: Enable UFW
   community.general.ufw:

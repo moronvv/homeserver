@@ -2,3 +2,13 @@
   service:
     name: nginx
     state: restarted
+
+- name: Restart unattended-upgrades
+  service:
+    name: unattended-upgrades
+    state: restarted
+
+- name: Reload tor
+  service:
+    name: tor@default
+    state: reloaded

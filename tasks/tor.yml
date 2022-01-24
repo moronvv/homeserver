@@ -1,8 +1,10 @@
-- name: Install autoupdaters
+- name: Install packages
   package:
     name:
       - unattended-upgrades
       - apt-listchanges
+      - tor
+      - nyx
     state: latest
 
 - name: Set unattended-upgrades file
@@ -16,6 +18,7 @@
       Unattended-Upgrade::Package-Blacklist {
       };
       Unattended-Upgrade::Automatic-Reboot "true";
+  notify: Restart unattended-upgrades
 
 - name: Set auto-upgrades file
   copy:
@@ -25,3 +28,19 @@
       APT::Periodic::AutocleanInterval "5";
       APT::Periodic::Unattended-Upgrade "1";
       APT::Periodic::Verbose "1";
+  notify: Restart unattended-upgrades
+
+- name: Tune tor config file
+  copy:
+    dest: /etc/tor/torrc
+    content: |
+      ORPort {{ tor_or_port }} IPv4Only
+      DirPort {{ tor_dir_port }}
+      ControlPort {{ tor_control_port }}
+      SocksPort 0
+      ExitRelay 0
+      Log notice file /var/log/tor/notices.log
+      HashedControlPassword {{ tor_hashed_control_password }}
+      Nickname {{ tor_nickname }}
+      ContactInfo {{ tor_email }}
+  notify: Reload tor

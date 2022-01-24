@@ -15,13 +15,16 @@
     stdin: "{{ raspotify_installer.content }}"
   when: "'raspotify' not in ansible_facts.packages"
 
-- name: Set username and password
+- name: Tune raspotify config file
   lineinfile:
     dest: /etc/raspotify/conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
   loop:
-    - { regexp: '^#LIBRESPOT_BITRATE="160"', line: 'LIBRESPOT_BITRATE="320"' }
+    - {
+        regexp: '^#LIBRESPOT_BITRATE="160"',
+        line: 'LIBRESPOT_BITRATE="{{ librespot_bitrate }}"',
+      }
     - {
         regexp: '^LIBRESPOT_USERNAME=""',
         line: 'LIBRESPOT_USERNAME="{{ spotify_username }}"',
@@ -36,7 +39,7 @@
       }
     - {
         regexp: '^#LIBRESPOT_ZEROCONF_PORT=""',
-        line: 'LIBRESPOT_ZEROCONF_PORT="4071"',
+        line: 'LIBRESPOT_ZEROCONF_PORT="{{ librespot_zeroconf_port }}"',
       }
   register: raspotify_config
 
