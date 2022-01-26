@@ -2,11 +2,13 @@
 - hosts: all
   become: yes
   tasks:
-    - import_tasks: tasks/essential.yml
-    - import_tasks: tasks/ufw.yml
-    - import_tasks: tasks/tor.yml
-    - import_tasks: tasks/spotify.yml
-    - import_tasks: tasks/web_server.yml
-    - import_tasks: tasks/certbot.yml
+    # - import_tasks: tasks/essential.yml
+    # - import_tasks: tasks/ufw.yml
+    - import_tasks: tasks/mail.yml
+    - import_tasks: tasks/autoupgrade.yml
+    # - import_tasks: tasks/tor.yml
+    # - import_tasks: tasks/spotify.yml
+    # - import_tasks: tasks/web_server.yml
+    # - import_tasks: tasks/certbot.yml
   handlers:
     - import_tasks: handlers/main.yml

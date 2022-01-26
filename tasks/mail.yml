@@ -1,0 +1,31 @@
+- name: Install packages
+  package:
+    name:
+      - bsd-mailx
+      - exim4
+    state: latest
+
+- name: Tune mail config file
+  copy:
+    dest: /etc/mail.rc
+    content: |
+      set smtp-use-starttls
+      set ssl-verify=ignore
+      set smtp={{ smtp_server }}
+      set smtp-auth=login
+      set smtp-auth-user={{ smtp_email }}
+      set smtp-auth-password={{ smtp_app_password }}
+      set from="{{ smtp_email }}"
+
+- name: Tune exim4 config file
+  lineinfile:
+    dest: /etc/exim4/update-exim4.conf.conf
+    regexp: "^dc_eximconfig_configtype='.*'"
+    line: "dc_eximconfig_configtype='internet'"
+  register: exim4_config
+
+- name: Restart exim4 daemon
+  service:
+    name: exim4
+    state: restarted
+  when: exim4_config.changed

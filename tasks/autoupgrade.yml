@@ -1,0 +1,30 @@
+- name: Install packages
+  package:
+    name:
+      - unattended-upgrades
+      - apt-listchanges
+    state: latest
+
+- name: Set unattended-upgrades file
+  copy:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    content: |
+      Unattended-Upgrade::Origins-Pattern {
+          "origin=${distro_id},codename=${distro_codename},label=${distro_id}"
+          "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation"
+      };
+      Unattended-Upgrade::Mail "{{ email }}";
+      Unattended-Upgrade::Remove-Unused-Dependencies "true";
+      Unattended-Upgrade::Automatic-Reboot "true";
+      Unattended-Upgrade::Automatic-Reboot-Time "03:00";
+  notify: Restart unattended-upgrades
+
+- name: Set auto-upgrades file
+  copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+      APT::Periodic::Verbose "1";
+      APT::Periodic::AutocleanInterval "7";
+  notify: Restart unattended-upgrades

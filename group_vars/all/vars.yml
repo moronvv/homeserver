@@ -8,6 +8,9 @@ librespot_control_port: "4070"
 librespot_zeroconf_port: "4071"
 output_device: "iec958:CARD=MQA,DEV=0"
 
+# mail
+smtp_server: smtp://smtp.gmail.com:587
+
 # tor
 tor_or_port: "9001"
 tor_dir_port: "9030"
