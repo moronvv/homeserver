@@ -7,21 +7,17 @@
 - name: Create "{{ domain_name }}" html directory
   file:
     path: "/var/www/{{ domain_name }}/html"
+    owner: www-data
+    group: www-data
+    mode: "755"
     state: directory
   notify: Restart nginx
 
-- name: Set stub html
+- name: Copy stub html
   copy:
-    dest: "/var/www/{{ domain_name }}/html/index.html"
-    content: |
-      <html>
-          <head>
-              <title>Hello, world!</title>
-          </head>
-          <body>
-              <h1>Hello, world!</h1>
-          </body>
-      </html>
+    src: /var/www/html/index.nginx-debian.html
+    dest: "/var/www/{{ domain_name }}/html/"
+    remote_src: yes
   notify: Restart nginx
 
 - name: Set site config
