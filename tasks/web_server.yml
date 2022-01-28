@@ -1,55 +1,29 @@
-- name: Install packages
-  package:
-    name:
-      - nginx
-    state: latest
+- name: Create docker network
+  docker_network:
+    name: "{{ docker_default_network }}"
 
-- name: Create "{{ domain_name }}" html directory
-  file:
-    path: "/var/www/{{ domain_name }}/html"
-    owner: www-data
-    group: www-data
-    mode: "755"
-    state: directory
-  notify: Restart nginx
-
-- name: Copy stub html
-  copy:
-    src: /var/www/html/index.nginx-debian.html
-    dest: "/var/www/{{ domain_name }}/html/"
-    remote_src: yes
-  notify: Restart nginx
-
-- name: Set site config
-  copy:
-    dest: "/etc/nginx/sites-available/{{ domain_name }}"
-    content: |
-      server {
-              listen 80;
-              listen [::]:80;
-
-              root /var/www/{{ domain_name }}/html;
-              index index.html index.htm index.nginx-debian.html;
-
-              server_name {{ domain_name }} www.{{ domain_name }};
-
-              location / {
-                      try_files $uri $uri/ =404;
-              }
-      }
-    force: no
-  notify: Restart nginx
-
-- name: Symlink config to sites-enabled
-  file:
-    src: "/etc/nginx/sites-available/{{ domain_name }}"
-    dest: "/etc/nginx/sites-enabled/{{ domain_name }}"
-    state: link
-  notify: Restart nginx
-
-- name: Change hash bucket size
-  lineinfile:
-    dest: /etc/nginx/nginx.conf
-    regexp: '#\s*server_names_hash_bucket_size.*;$'
-    line: "server_names_hash_bucket_size 64;"
-  notify: Restart nginx
+- name: Init swag
+  docker_container:
+    name: swag
+    image: lscr.io/linuxserver/swag
+    pull: true
+    networks:
+      - name: "{{ docker_default_network }}"
+    capabilities:
+      - net_admin
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+      URL: "{{ domain_name }}"
+      VALIDATION: http
+      SUBDOMAINS: www,
+      EMAIL: "{{ email }}"
+      ONLY_SUBDOMAINS: "true"
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - /etc/swag/config:/config
+    restart_policy: unless-stopped

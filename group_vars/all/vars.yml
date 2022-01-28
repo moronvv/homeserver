@@ -1,6 +1,12 @@
 # general
 username: pi
+puid: "1000"
+guid: "1000"
+timezone: Europe/Moscow
 network_interface: wlan0
+
+# docker
+docker_default_network: "main"
 
 # raspotify
 librespot_bitrate: "320"
