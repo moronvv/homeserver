@@ -17,9 +17,10 @@
       PGID: "{{ guid }}"
       TZ: "{{ timezone }}"
       URL: "{{ domain_name }}"
-      VALIDATION: http
-      SUBDOMAINS: www,
+      VALIDATION: duckdns
+      SUBDOMAINS: wildcard
       EMAIL: "{{ email }}"
+      DUCKDNSTOKEN: "{{ duckdns_token }}"
       ONLY_SUBDOMAINS: "true"
     ports:
       - 443:443

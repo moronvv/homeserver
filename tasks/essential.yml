@@ -16,6 +16,11 @@
       - libssl-dev
     state: latest
 
+- name: Install essential pip packages
+  pip:
+    name:
+      - docker-compose
+
 - name: Get installed packages as facts
   package_facts:
     manager: auto
@@ -33,11 +38,6 @@
     cmd: sh
     stdin: "{{ docker_installer.content }}"
   when: "'docker-ce' not in ansible_facts.packages"
-
-- name: Install docker-compose
-  pip:
-    name:
-      - docker-compose
 ###
 
 - name: Disable SSH password auth

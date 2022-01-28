@@ -6,13 +6,13 @@ timezone: Europe/Moscow
 network_interface: wlan0
 
 # docker
-docker_default_network: "main"
+docker_default_network: swag
 
 # raspotify
 librespot_bitrate: "320"
 librespot_control_port: "4070"
 librespot_zeroconf_port: "4071"
-output_device: "iec958:CARD=MQA,DEV=0"
+output_device: iec958:CARD=MQA,DEV=0
 
 # mail
 smtp_server: smtp://smtp.gmail.com:587
