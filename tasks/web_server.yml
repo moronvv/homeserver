@@ -1,14 +1,20 @@
 - name: Create docker network
   docker_network:
-    name: "{{ docker_default_network }}"
+    name: "{{ subnet_name }}"
+    ipam_config:
+      - subnet: "{{ subnet_ip }}"
+        gateway: "{{ subnet_gateway }}"
+
+- name: Pull swag image
+  docker_image:
+    name: lscr.io/linuxserver/swag
+    source: pull
+    timeout: 300
 
 - name: Init swag
   docker_container:
     name: swag
     image: lscr.io/linuxserver/swag
-    pull: true
-    networks:
-      - name: "{{ docker_default_network }}"
     capabilities:
       - net_admin
     state: started
@@ -28,3 +34,6 @@
     volumes:
       - /etc/swag/config:/config
     restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ swag_subnet_ip }}"

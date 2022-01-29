@@ -1,9 +1,3 @@
-- name: Restart nginx
-  service:
-    name: nginx
-    state: restarted
-    enabled: yes
-
 - name: Restart unattended-upgrades
   service:
     name: unattended-upgrades
@@ -15,3 +9,8 @@
     name: tor@default
     state: reloaded
     enabled: yes
+
+- name: Restart swag
+  docker_container:
+    name: swag
+    restart: restart

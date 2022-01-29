@@ -1,0 +1,53 @@
+- name: Pull cloudflared image
+  docker_image:
+    name: visibilityspots/cloudflared:latest
+    source: pull
+    timeout: 300
+
+- name: Init cloudflared
+  docker_container:
+    name: cloudflared
+    image: visibilityspots/cloudflared:latest
+    state: started
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ cloudflared_subnet_ip }}"
+
+- name: Pull pihole image
+  docker_image:
+    name: pihole/pihole:latest
+    source: pull
+    timeout: 300
+
+- name: Init pihole
+  docker_container:
+    name: pihole
+    image: pihole/pihole:latest
+    capabilities:
+      - net_admin
+    state: started
+    env:
+      TZ: "{{ timezone }}"
+      WEBPASSWORD: "{{ pihole_password }}"
+      IPv6: "false"
+      DNS1: "{{ cloudflared_subnet_ip }}#5054"
+      DNS2: "no"
+    ports:
+      - 8081:80/tcp
+      - 53:53/tcp
+      - 53:53/udp
+    volumes:
+      - "/etc/pihole:/etc/pihole"
+      - "/etc/dnsmasq.d:/etc/dnsmasq.d"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ pihole_subnet_ip }}"
+
+- name: Enable pihole upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/pihole.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/pihole.subdomain.conf
+    remote_src: yes
+  notify: Restart swag
