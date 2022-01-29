@@ -2,13 +2,16 @@
   service:
     name: nginx
     state: restarted
+    enabled: yes
 
 - name: Restart unattended-upgrades
   service:
     name: unattended-upgrades
     state: restarted
+    enabled: yes
 
 - name: Reload tor
   service:
     name: tor@default
     state: reloaded
+    enabled: yes

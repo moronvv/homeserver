@@ -9,5 +9,6 @@
     - import_tasks: tasks/tor.yml
     - import_tasks: tasks/spotify.yml
     - import_tasks: tasks/web_server.yml
+    - import_tasks: tasks/cloudflared.yml
   handlers:
     - import_tasks: handlers/main.yml

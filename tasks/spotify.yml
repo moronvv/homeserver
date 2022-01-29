@@ -47,4 +47,5 @@
   service:
     name: raspotify
     state: restarted
+    enabled: yes
   when: raspotify_config.changed

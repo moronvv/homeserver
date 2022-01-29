@@ -28,4 +28,5 @@
   service:
     name: exim4
     state: restarted
+    enabled: yes
   when: exim4_config.changed

@@ -14,6 +14,10 @@ librespot_control_port: "4070"
 librespot_zeroconf_port: "4071"
 output_device: iec958:CARD=MQA,DEV=0
 
+# pihole
+cloudflared_download_url: https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm
+cloudflared_port: "5053"
+
 # mail
 smtp_server: smtp://smtp.gmail.com:587
 
