@@ -1,14 +1,16 @@
 - name: Pull cloudflared image
   docker_image:
-    name: visibilityspots/cloudflared:latest
+    name: crazymax/cloudflared:latest
     source: pull
     timeout: 300
 
 - name: Init cloudflared
   docker_container:
     name: cloudflared
-    image: visibilityspots/cloudflared:latest
+    image: crazymax/cloudflared:latest
     state: started
+    env:
+      TZ: "{{ timezone }}"
     restart_policy: unless-stopped
     networks:
       - name: "{{ subnet_name }}"
@@ -31,7 +33,7 @@
       TZ: "{{ timezone }}"
       WEBPASSWORD: "{{ pihole_password }}"
       IPv6: "false"
-      DNS1: "{{ cloudflared_subnet_ip }}#5054"
+      DNS1: "{{ cloudflared_subnet_ip }}#5053"
       DNS2: "no"
     ports:
       - 8081:80/tcp
