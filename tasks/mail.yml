@@ -4,6 +4,7 @@
       - bsd-mailx
       - exim4
     state: latest
+  tags: mail
 
 - name: Tune mail config file
   copy:
@@ -11,11 +12,12 @@
     content: |
       set smtp-use-starttls
       set ssl-verify=ignore
-      set smtp={{ smtp_server }}
+      set smtp=smtp://{{ smtp_host }}:{{ smtp_port }}
       set smtp-auth=login
       set smtp-auth-user={{ smtp_email }}
       set smtp-auth-password={{ smtp_app_password }}
       set from="{{ smtp_email }}"
+  tags: mail
 
 - name: Tune exim4 config file
   lineinfile:
@@ -23,6 +25,7 @@
     regexp: "^dc_eximconfig_configtype='.*'"
     line: "dc_eximconfig_configtype='internet'"
   register: exim4_config
+  tags: mail
 
 - name: Restart exim4 daemon
   service:
@@ -30,3 +33,4 @@
     state: restarted
     enabled: yes
   when: exim4_config.changed
+  tags: mail

@@ -12,6 +12,7 @@ subnet_gateway: 172.20.0.1
 swag_subnet_ip: 172.20.0.2
 cloudflared_subnet_ip: 172.20.0.3
 pihole_subnet_ip: 172.20.0.4
+diun_subnet_ip: 172.20.0.5
 
 # raspotify
 librespot_bitrate: "320"
@@ -20,7 +21,8 @@ librespot_zeroconf_port: "4071"
 output_device: iec958:CARD=MQA,DEV=0
 
 # mail
-smtp_server: smtp://smtp.gmail.com:587
+smtp_host: smtp.gmail.com
+smtp_port: "587"
 
 # tor
 tor_or_port: "9001"

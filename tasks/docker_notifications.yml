@@ -1,0 +1,37 @@
+- name: Pull diun image
+  docker_image:
+    name: crazymax/diun:latest
+    source: pull
+    timeout: 300
+  tags: docker_notifications
+
+- name: Init diun
+  docker_container:
+    name: diun
+    image: crazymax/diun:latest
+    command: serve
+    state: started
+    env:
+      TZ: "{{ timezone }}"
+      LOG_LEVEL: info
+      LOG_JSON: "false"
+      DIUN_WATCH_WORKERS: "10"
+      DIUN_WATCH_SCHEDULE: 0 0 * * *
+      DIUN_PROVIDERS_DOCKER: "true"
+      DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "true"
+      DIUN_NOTIF_MAIL_HOST: "{{ smtp_host}}"
+      DIUN_NOTIF_MAIL_PORT: "{{ smtp_port}}"
+      DIUN_NOTIF_MAIL_USERNAME: "{{ smtp_email }}"
+      DIUN_NOTIF_MAIL_PASSWORD: "{{ smtp_app_password }}"
+      DIUN_NOTIF_MAIL_FROM: "{{ smtp_email }}"
+      DIUN_NOTIF_MAIL_TO: "{{ email }}"
+      DIUN_NOTIF_MAIL_SSL: "false"
+      DIUN_NOTIF_MAIL_INSECURESKIPVERIFY: "false"
+    volumes:
+      - "/etc/diun/data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ diun_subnet_ip }}"
+  tags: docker_notifications
