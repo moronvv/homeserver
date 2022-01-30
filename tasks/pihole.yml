@@ -3,6 +3,7 @@
     name: crazymax/cloudflared:latest
     source: pull
     timeout: 300
+  tags: pihole
 
 - name: Init cloudflared
   docker_container:
@@ -15,12 +16,14 @@
     networks:
       - name: "{{ subnet_name }}"
         ipv4_address: "{{ cloudflared_subnet_ip }}"
+  tags: pihole
 
 - name: Pull pihole image
   docker_image:
     name: pihole/pihole:latest
     source: pull
     timeout: 300
+  tags: pihole
 
 - name: Init pihole
   docker_container:
@@ -46,10 +49,21 @@
     networks:
       - name: "{{ subnet_name }}"
         ipv4_address: "{{ pihole_subnet_ip }}"
+  tags: pihole
 
 - name: Enable pihole upstream in swag
   copy:
     src: /etc/swag/config/nginx/proxy-confs/pihole.subdomain.conf.sample
     dest: /etc/swag/config/nginx/proxy-confs/pihole.subdomain.conf
     remote_src: yes
+    force: no
   notify: Restart swag
+  tags: pihole
+
+- name: Hide from global net
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/pihole.subdomain.conf
+    regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
+    replace: '        include /config/nginx/internal.conf;\n\1'
+  notify: Restart swag
+  tags: pihole

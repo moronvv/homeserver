@@ -13,4 +13,4 @@
 - name: Restart swag
   docker_container:
     name: swag
-    restart: restart
+    restart: yes

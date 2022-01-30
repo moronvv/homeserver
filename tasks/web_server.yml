@@ -4,12 +4,14 @@
     ipam_config:
       - subnet: "{{ subnet_ip }}"
         gateway: "{{ subnet_gateway }}"
+  tags: web_server
 
 - name: Pull swag image
   docker_image:
     name: lscr.io/linuxserver/swag
     source: pull
     timeout: 300
+  tags: web_server
 
 - name: Init swag
   docker_container:
@@ -37,3 +39,13 @@
     networks:
       - name: "{{ subnet_name }}"
         ipv4_address: "{{ swag_subnet_ip }}"
+  tags: web_server
+
+- name: Create nginx config to block external ips
+  copy:
+    dest: /etc/swag/config/nginx/internal.conf
+    content: |
+      allow {{ external_ip }};
+      deny all;
+  notify: Restart swag
+  tags: web_server
