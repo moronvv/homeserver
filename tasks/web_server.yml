@@ -49,3 +49,11 @@
       deny all;
   notify: Restart swag
   tags: web_server
+
+- name: Hide apps from search engines
+  lineinfile:
+    path: /etc/swag/config/nginx/ssl.conf
+    insertafter: EOF
+    line: add_header X-Robots-Tag "noindex, nofollow, nosnippet, noarchive";
+  notify: Restart swag
+  tags: tmp
