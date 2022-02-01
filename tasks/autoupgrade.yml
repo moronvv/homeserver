@@ -4,6 +4,7 @@
       - unattended-upgrades
       - apt-listchanges
     state: latest
+  tags: autoupgrade
 
 - name: Set unattended-upgrades file
   copy:
@@ -16,6 +17,7 @@
       Unattended-Upgrade::Mail "{{ email }}";
       Unattended-Upgrade::Remove-Unused-Dependencies "true";
   notify: Restart unattended-upgrades
+  tags: autoupgrade
 
 - name: Set auto-upgrades file
   copy:
@@ -26,3 +28,4 @@
       APT::Periodic::Verbose "1";
       APT::Periodic::AutocleanInterval "7";
   notify: Restart unattended-upgrades
+  tags: autoupgrade

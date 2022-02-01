@@ -4,20 +4,39 @@
       - ufw
     state: latest
   register: ufw_installed
+  tags: ufw
 
 - name: Reboot after UFW install
   reboot:
   when: ufw_installed.changed
+  tags: ufw
+
+- name: Check ufw service
+  service:
+    name: ufw
+    state: started
+    enabled: yes
+  tags: ufw
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+  tags: ufw
 
 - name: Allow ssh in UFW
   community.general.ufw:
     rule: allow
     name: OpenSSH
+  tags: ufw
 
-- name: Allow nginx in UFW
+- name: Allow web server ports
   community.general.ufw:
     rule: allow
-    name: Nginx Full
+    port: "{{ item }}"
+  loop:
+    - "80"
+    - "443"
+  tags: ufw
 
 - name: Allow raspotify ports
   community.general.ufw:
@@ -26,6 +45,7 @@
   loop:
     - "{{ librespot_control_port }}"
     - "{{ librespot_zeroconf_port }}"
+  tags: ufw
 
 - name: Allow tor ports
   community.general.ufw:
@@ -34,7 +54,4 @@
   loop:
     - "{{ tor_or_port }}"
     - "{{ tor_dir_port }}"
-
-- name: Enable UFW
-  community.general.ufw:
-    state: enabled
+  tags: ufw

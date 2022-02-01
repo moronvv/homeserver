@@ -8,6 +8,7 @@
     - import_tasks: tasks/autoupgrade.yml
     - import_tasks: tasks/tor.yml
     - import_tasks: tasks/spotify.yml
+    - import_tasks: tasks/docker_networks.yml
     - import_tasks: tasks/docker_notifications.yml
     - import_tasks: tasks/web_server.yml
     - import_tasks: tasks/pihole.yml

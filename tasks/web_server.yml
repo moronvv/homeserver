@@ -1,11 +1,3 @@
-- name: Create docker network
-  docker_network:
-    name: "{{ subnet_name }}"
-    ipam_config:
-      - subnet: "{{ subnet_ip }}"
-        gateway: "{{ subnet_gateway }}"
-  tags: web_server
-
 - name: Pull swag image
   docker_image:
     name: lscr.io/linuxserver/swag
@@ -42,6 +34,11 @@
         ipv4_address: "{{ swag_subnet_ip }}"
   tags: web_server
 
+- name: Wait until swag nginx directory exists
+  wait_for:
+    path: /etc/swag/config/nginx/
+  tags: web_server
+
 - name: Create nginx config to block external ips
   copy:
     dest: /etc/swag/config/nginx/internal.conf
@@ -58,4 +55,4 @@
     insertafter: EOF
     line: add_header X-Robots-Tag "noindex, nofollow, nosnippet, noarchive";
   notify: Restart swag
-  tags: tmp
+  tags: web_server

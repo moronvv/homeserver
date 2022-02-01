@@ -4,6 +4,7 @@
       - tor
       - nyx
     state: latest
+  tags: tor
 
 - name: Tune tor config file
   copy:
@@ -18,4 +19,6 @@
       HashedControlPassword {{ tor_hashed_control_password }}
       Nickname {{ tor_nickname }}
       ContactInfo {{ tor_email }}
+      MyFamily {{ tor_fingerprints }}
   notify: Reload tor
+  tags: tor
