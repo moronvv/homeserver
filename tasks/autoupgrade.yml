@@ -15,8 +15,6 @@
       };
       Unattended-Upgrade::Mail "{{ email }}";
       Unattended-Upgrade::Remove-Unused-Dependencies "true";
-      Unattended-Upgrade::Automatic-Reboot "true";
-      Unattended-Upgrade::Automatic-Reboot-Time "03:00";
   notify: Restart unattended-upgrades
 
 - name: Set auto-upgrades file

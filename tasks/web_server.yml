@@ -30,6 +30,7 @@
       EMAIL: "{{ email }}"
       DUCKDNSTOKEN: "{{ duckdns_token }}"
       ONLY_SUBDOMAINS: "true"
+      DOCKER_MODS: linuxserver/mods:swag-dashboard
     ports:
       - 443:443
       - 80:80
@@ -46,6 +47,7 @@
     dest: /etc/swag/config/nginx/internal.conf
     content: |
       allow {{ external_ip }};
+      allow 192.168.1.0/24;
       deny all;
   notify: Restart swag
   tags: web_server

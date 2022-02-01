@@ -60,7 +60,7 @@
   notify: Restart swag
   tags: pihole
 
-- name: Hide from global net
+- name: Block external ips
   replace:
     path: /etc/swag/config/nginx/proxy-confs/pihole.subdomain.conf
     regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
