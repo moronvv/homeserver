@@ -1,0 +1,47 @@
+- name: Pull homer image
+  docker_image:
+    name: b4bz/homer:latest
+    source: pull
+    timeout: 300
+  tags: homer
+
+- name: Init homer
+  docker_container:
+    name: homer
+    image: b4bz/homer:latest
+    state: started
+    volumes:
+      - /etc/homer/assets:/www/assets
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ homer_subnet_ip }}"
+  tags: homer
+
+- name: Wait until homer assets directory exists
+  wait_for:
+    path: /etc/homer/assets/
+  tags: homer
+
+- name: Copy assets file
+  copy:
+    src: templates/homer.yml
+    dest: /etc/homer/assets/config.yml
+  tags: homer
+
+- name: Enable homer upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/homer.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/homer.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: homer
+
+- name: Block external ips
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/homer.subdomain.conf
+    regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
+    replace: '        include /config/nginx/internal.conf;\n\1'
+  notify: Restart swag
+  tags: homer

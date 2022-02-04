@@ -29,6 +29,9 @@
   docker_container:
     name: pihole
     image: pihole/pihole:latest
+    dns_servers:
+      - 127.0.0.1
+      - 8.8.8.8
     capabilities:
       - net_admin
     state: started
@@ -38,8 +41,8 @@
       IPv6: "false"
       DNS1: "{{ cloudflared_subnet_ip }}#5053"
       DNS2: "no"
+      CORS_HOSTS: "homer.{{ domain_name }},homer.lan"
     ports:
-      - 8081:80/tcp
       - 53:53/tcp
       - 53:53/udp
     volumes:

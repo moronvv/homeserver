@@ -29,6 +29,12 @@
     name: OpenSSH
   tags: ufw
 
+- name: Allow dns in UFW
+  community.general.ufw:
+    rule: allow
+    name: DNS
+  tags: ufw
+
 - name: Allow web server ports
   community.general.ufw:
     rule: allow

@@ -49,6 +49,15 @@
   notify: Restart swag
   tags: web_server
 
+- name: Enable swag dashboard upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/dashboard.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/dashboard.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: web_server
+
 - name: Hide apps from search engines
   lineinfile:
     path: /etc/swag/config/nginx/ssl.conf

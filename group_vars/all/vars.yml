@@ -13,6 +13,8 @@ swag_subnet_ip: 172.20.0.2
 cloudflared_subnet_ip: 172.20.0.3
 pihole_subnet_ip: 172.20.0.4
 diun_subnet_ip: 172.20.0.5
+homer_subnet_ip: 172.20.0.6
+cors_subnet_ip: 172.20.0.7
 
 # raspotify
 librespot_bitrate: "320"
