@@ -35,6 +35,13 @@
     name: DNS
   tags: ufw
 
+- name: Allow wireguard ports
+  community.general.ufw:
+    rule: allow
+    port: "{{ wireguard_port }}"
+    proto: udp
+  tags: ufw
+
 - name: Allow web server ports
   community.general.ufw:
     rule: allow

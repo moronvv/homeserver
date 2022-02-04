@@ -1,0 +1,51 @@
+- name: Pull wireguard image
+  docker_image:
+    name: lscr.io/linuxserver/wireguard
+    source: pull
+    timeout: 300
+  tags: vpn
+
+- name: Init wireguard
+  docker_container:
+    name: wireguard
+    image: lscr.io/linuxserver/wireguard
+    capabilities:
+      - net_admin
+      - sys_module
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+      SERVERURL: "wireguard.{{ domain_name }}"
+      SERVERPORT: "{{ wireguard_port }}"
+      PEERS: pixel4XL
+      PEERDNS: auto
+      INTERNAL_SUBNET: "{{ wireguard_subnet }}"
+    ports:
+      - "{{ wireguard_port }}/udp:{{ wireguard_port }}/udp"
+    volumes:
+      - /etc/wireguard/config:/config
+      - /lib/modules:/lib/modules
+    sysctls:
+      net.ipv4.conf.all.src_valid_mark: "1"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ wireguard_subnet_ip }}"
+  tags: vpn
+
+- name: Wait until wireguard conf directory exists
+  wait_for:
+    path: /etc/wireguard/config/
+  tags: vpn
+
+- name: Send wireguard traffic to pihole
+  copy:
+    dest: /etc/wireguard/config/coredns/Corefile
+    content: |
+      . {
+          forward . {{ pihole_subnet_ip }}
+      }
+  notify: Restart wireguard
+  tags: vpn
