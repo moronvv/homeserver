@@ -1,0 +1,44 @@
+- name: Pull vaultwarden image
+  docker_image:
+    name: vaultwarden/server:latest
+    source: pull
+    timeout: 300
+  tags: vaultwarden
+
+- name: Init vaultwarden
+  docker_container:
+    name: vaultwarden
+    image: vaultwarden/server:latest
+    dns_servers:
+      - 127.0.0.1
+      - 8.8.8.8
+    state: started
+    env:
+      WEBSOCKET_ENABLED: "true"
+      SIGNUPS_ALLOWED: "false"
+      INVITATIONS_ALLOWED: "false"
+      ADMIN_TOKEN: "{{ vaultwarden_admin_token }}"
+      DOMAIN: "https://vaultwarden.{{ domain_name }}"
+      SMTP_HOST: "{{ smtp_host }}"
+      SMTP_PORT: "{{ smtp_port }}"
+      SMTP_FROM: "{{ smtp_email }}"
+      SMTP_SSL: "true"
+      SMTP_EXPLICIT_TLS: "false"
+      SMTP_USERNAME: "{{ smtp_email }}"
+      SMTP_PASSWORD: "{{ smtp_app_password }}"
+    volumes:
+      - /etc/vaultwarden/data:/data
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ vaultwarden_subnet_ip }}"
+  tags: vaultwarden
+
+- name: Enable vaultwarden upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/vaultwarden.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/vaultwarden.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: vaultwarden
