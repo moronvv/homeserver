@@ -14,6 +14,7 @@
       - 8.8.8.8
     state: started
     env:
+      TZ: "{{ timezone }}"
       WEBSOCKET_ENABLED: "true"
       SIGNUPS_ALLOWED: "false"
       INVITATIONS_ALLOWED: "false"

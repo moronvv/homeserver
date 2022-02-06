@@ -1,0 +1,32 @@
+- name: Pull watchtower image
+  docker_image:
+    name: containrrr/watchtower:arm64v8-latest
+    source: pull
+    timeout: 300
+  tags: watchtower
+
+- name: Init watchtower
+  docker_container:
+    name: watchtower
+    image: containrrr/watchtower:arm64v8-latest
+    dns_servers:
+      - 127.0.0.1
+      - 8.8.8.8
+    state: started
+    env:
+      TZ: "{{ timezone }}"
+      WATCHTOWER_NOTIFICATIONS: email
+      WATCHTOWER_NOTIFICATION_EMAIL_FROM: "{{ smtp_email }}"
+      WATCHTOWER_NOTIFICATION_EMAIL_TO: "{{ email }}"
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER: "{{ smtp_host }}"
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT: "{{ smtp_port }}"
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER: "{{ smtp_email }}"
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD: "{{ smtp_app_password }}"
+      WATCHTOWER_NOTIFICATION_EMAIL_DELAY: "2"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ watchtower_subnet_ip }}"
+  tags: watchtower
