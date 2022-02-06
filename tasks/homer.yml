@@ -24,8 +24,8 @@
   tags: homer
 
 - name: Copy assets file
-  copy:
-    src: templates/homer.yml
+  template:
+    src: templates/homer.yml.j2
     dest: /etc/homer/assets/config.yml
   tags: homer
 

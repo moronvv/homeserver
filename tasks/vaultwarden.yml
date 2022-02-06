@@ -42,3 +42,11 @@
     force: no
   notify: Restart swag
   tags: vaultwarden
+
+- name: Include cors config
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/vaultwarden.subdomain.conf
+    regexp: '^(?: *include /config/nginx/cors\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
+    replace: '        include /config/nginx/cors.conf;\n\1'
+  notify: Restart swag
+  tags: vaultwarden
