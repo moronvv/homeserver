@@ -30,8 +30,8 @@
     name: pihole
     image: pihole/pihole:latest
     dns_servers:
-      - 127.0.0.1
-      - 8.8.8.8
+      - "{{ cloudflared_subnet_ip }}:5053"
+      - 1.1.1.1
     capabilities:
       - net_admin
     state: started

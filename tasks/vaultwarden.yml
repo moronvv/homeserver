@@ -10,8 +10,7 @@
     name: vaultwarden
     image: vaultwarden/server:latest
     dns_servers:
-      - 127.0.0.1
-      - 8.8.8.8
+      - "{{ pihole_subnet_ip }}"
     state: started
     env:
       TZ: "{{ timezone }}"

@@ -11,6 +11,9 @@
     image: lscr.io/linuxserver/swag
     capabilities:
       - net_admin
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     env:
       PUID: "{{ puid }}"
@@ -22,7 +25,6 @@
       EMAIL: "{{ email }}"
       DUCKDNSTOKEN: "{{ duckdns_token }}"
       ONLY_SUBDOMAINS: "true"
-      DOCKER_MODS: linuxserver/mods:swag-dashboard
     ports:
       - 443:443
       - 80:80
@@ -57,15 +59,6 @@
       if ($request_method ~* "(GET|POST|HEAD)") {
         add_header "Access-Control-Allow-Origin"  *;
       }
-  notify: Restart swag
-  tags: web_server
-
-- name: Enable swag dashboard upstream in swag
-  copy:
-    src: /etc/swag/config/nginx/proxy-confs/dashboard.subdomain.conf.sample
-    dest: /etc/swag/config/nginx/proxy-confs/dashboard.subdomain.conf
-    remote_src: yes
-    force: no
   notify: Restart swag
   tags: web_server
 

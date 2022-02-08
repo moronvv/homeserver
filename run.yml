@@ -15,5 +15,10 @@
     - import_tasks: tasks/pihole.yml
     - import_tasks: tasks/homer.yml
     - import_tasks: tasks/vaultwarden.yml
+    - import_tasks: tasks/torrent.yml
+    - import_tasks: tasks/jackett.yml
+    - import_tasks: tasks/jellyfin.yml
+    - import_tasks: tasks/radarr.yml
+    - import_tasks: tasks/sonarr.yml
   handlers:
     - import_tasks: handlers/main.yml

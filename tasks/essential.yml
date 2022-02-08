@@ -60,3 +60,9 @@
     name: sshd
     state: restarted
   when: sshd_config.changed
+
+- name: Turn off wifi power saver
+  lineinfile:
+    path: /etc/rc.local
+    insertbefore: exit 0
+    line: /sbin/iwconfig wlan0 power off

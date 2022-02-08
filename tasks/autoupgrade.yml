@@ -11,8 +11,7 @@
     dest: /etc/apt/apt.conf.d/50unattended-upgrades
     content: |
       Unattended-Upgrade::Origins-Pattern {
-          "origin=${distro_id},codename=${distro_codename},label=${distro_id}"
-          "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation"
+          "origin=*";
       };
       Unattended-Upgrade::Mail "{{ email }}";
       Unattended-Upgrade::Remove-Unused-Dependencies "true";

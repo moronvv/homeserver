@@ -1,0 +1,52 @@
+- name: Pull sonarr image
+  docker_image:
+    name: lscr.io/linuxserver/sonarr
+    source: pull
+    timeout: 300
+  tags: sonarr
+
+- name: Init sonarr
+  docker_container:
+    name: sonarr
+    image: lscr.io/linuxserver/sonarr
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+    volumes:
+      - /etc/sonarr/config:/config
+      - "{{ data_dir }}/Documents/TV:/tv"
+      - "{{ data_dir }}/Downloads:/downloads"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ sonarr_subnet_ip }}"
+  tags: sonarr
+
+- name: Enable sonarr upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/sonarr.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/sonarr.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: sonarr
+
+- name: Add cors config
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/sonarr.subdomain.conf
+    regexp: '^(?: *include /config/nginx/cors\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
+    replace: '        include /config/nginx/cors.conf;\n\1'
+  notify: Restart swag
+  tags: sonarr
+
+- name: Block external ips
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/sonarr.subdomain.conf
+    regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *include /config/nginx/cors\.conf;\n)'
+    replace: '        include /config/nginx/internal.conf;\n\1'
+  notify: Restart swag
+  tags: sonarr

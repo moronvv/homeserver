@@ -1,0 +1,52 @@
+- name: Pull radarr image
+  docker_image:
+    name: lscr.io/linuxserver/radarr
+    source: pull
+    timeout: 300
+  tags: radarr
+
+- name: Init radarr
+  docker_container:
+    name: radarr
+    image: lscr.io/linuxserver/radarr
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+    volumes:
+      - /etc/radarr/config:/config
+      - "{{ data_dir }}/Documents/Movies:/movies"
+      - "{{ data_dir }}/Downloads:/downloads"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ radarr_subnet_ip }}"
+  tags: radarr
+
+- name: Enable radarr upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/radarr.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/radarr.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: radarr
+
+- name: Add cors config
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/radarr.subdomain.conf
+    regexp: '^(?: *include /config/nginx/cors\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
+    replace: '        include /config/nginx/cors.conf;\n\1'
+  notify: Restart swag
+  tags: radarr
+
+- name: Block external ips
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/radarr.subdomain.conf
+    regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *include /config/nginx/cors\.conf;\n)'
+    replace: '        include /config/nginx/internal.conf;\n\1'
+  notify: Restart swag
+  tags: radarr

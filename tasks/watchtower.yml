@@ -1,6 +1,6 @@
 - name: Pull watchtower image
   docker_image:
-    name: containrrr/watchtower:arm64v8-latest
+    name: containrrr/watchtower:latest
     source: pull
     timeout: 300
   tags: watchtower
@@ -8,13 +8,13 @@
 - name: Init watchtower
   docker_container:
     name: watchtower
-    image: containrrr/watchtower:arm64v8-latest
+    image: containrrr/watchtower:latest
     dns_servers:
-      - 127.0.0.1
-      - 8.8.8.8
+      - "{{ pihole_subnet_ip }}"
     state: started
     env:
       TZ: "{{ timezone }}"
+      WATCHTOWER_NO_STARTUP_MESSAGE: "true"
       WATCHTOWER_NOTIFICATIONS: email
       WATCHTOWER_NOTIFICATION_EMAIL_FROM: "{{ smtp_email }}"
       WATCHTOWER_NOTIFICATION_EMAIL_TO: "{{ email }}"
