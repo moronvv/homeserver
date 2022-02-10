@@ -20,5 +20,6 @@
     - import_tasks: tasks/jellyfin.yml
     - import_tasks: tasks/radarr.yml
     - import_tasks: tasks/sonarr.yml
+    - import_tasks: tasks/nextcloud.yml
   handlers:
     - import_tasks: handlers/main.yml

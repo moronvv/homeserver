@@ -1,0 +1,73 @@
+- name: Pull mariadb image
+  docker_image:
+    name: lscr.io/linuxserver/mariadb
+    source: pull
+    timeout: 300
+  tags: nextcloud
+
+- name: Init MariaDB
+  docker_container:
+    name: nextcloud-mariadb
+    image: lscr.io/linuxserver/mariadb
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+      MYSQL_ROOT_PASSWORD: "{{ nextcloud_mariadb_root_password }}"
+      MYSQL_PASSWORD: "{{ nextcloud_mariadb_password }}"
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+    volumes:
+      - /etc/mariadb/config:/config
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ nextcloud_mariadb_subnet_ip }}"
+  tags: nextcloud
+
+- name: Pull nextcloud image
+  docker_image:
+    name: lscr.io/linuxserver/nextcloud:php8
+    source: pull
+    timeout: 300
+  tags: nextcloud
+
+- name: Init nextcloud
+  docker_container:
+    name: nextcloud
+    image: lscr.io/linuxserver/nextcloud:php8
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+    volumes:
+      - /etc/nextcloud/config:/config
+      - "{{ data_dir }}:/data"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ nextcloud_subnet_ip }}"
+  tags: nextcloud
+
+- name: Enable nextcloud upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/nextcloud.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/nextcloud.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: nextcloud
+
+- name: Add cors config
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/nextcloud.subdomain.conf
+    regexp: '^(?: *include /config/nginx/cors\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
+    replace: '        include /config/nginx/cors.conf;\n\1'
+  notify: Restart swag
+  tags: nextcloud
