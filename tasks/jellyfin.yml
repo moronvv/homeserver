@@ -16,6 +16,10 @@
       PUID: "{{ puid }}"
       PGID: "{{ guid }}"
       TZ: "{{ timezone }}"
+    devices:
+      - "/dev/video10:/dev/video10"
+      - "/dev/video11:/dev/video11"
+      - "/dev/video12:/dev/video12"
     volumes:
       - /etc/jellyfin/config:/config
       - "{{ data_dir }}/Documents/TV:/tvshows"

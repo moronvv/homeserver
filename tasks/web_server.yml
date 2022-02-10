@@ -57,7 +57,7 @@
     dest: /etc/swag/config/nginx/cors.conf
     content: |
       if ($request_method ~* "(GET|POST|HEAD)") {
-        add_header "Access-Control-Allow-Origin"  *;
+        add_header "Access-Control-Allow-Origin" *;
       }
   notify: Restart swag
   tags: web_server
