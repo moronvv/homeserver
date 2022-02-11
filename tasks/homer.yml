@@ -27,7 +27,9 @@
   template:
     src: templates/homer.yml.j2
     dest: /etc/homer/assets/config.yml
-  tags: homer
+  tags:
+    - homer
+    - homer_asset
 
 - name: Enable homer upstream in swag
   copy:

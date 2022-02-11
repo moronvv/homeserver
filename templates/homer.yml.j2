@@ -2,13 +2,14 @@
 # Homepage configuration
 # See https://fontawesome.com/icons for icons options
 
-title: "Demo dashboard"
+title: "Dashboard"
 subtitle: "Homer"
 logo: "logo.png"
 # icon: "fas fa-skull-crossbones" # Optional icon
 
 header: true
-footer: '<p>Created with <span class="has-text-danger">❤️</span> with <a href="https://bulma.io/">bulma</a>, <a href="https://vuejs.org/">vuejs</a> & <a href="https://fontawesome.com/">font awesome</a> // Fork me on <a href="https://github.com/bastienwirtz/homer"><i class="fab fa-github-alt"></i></a></p>' # set false if you want to hide it.
+footer: false
+# footer: '<p>Created with <span class="has-text-danger">❤️</span> with <a href="https://bulma.io/">bulma</a>, <a href="https://vuejs.org/">vuejs</a> & <a href="https://fontawesome.com/">font awesome</a> // Fork me on <a href="https://github.com/bastienwirtz/homer"><i class="fab fa-github-alt"></i></a></p>' # set false if you want to hide it.
 
 # Optional theme customization
 theme: default
@@ -50,38 +51,48 @@ colors:
 
 # Optional navbar
 # links: [] # Allows for navbar (dark mode, layout, and search) without any links
-links:
-  - name: "Contribute"
-    icon: "fab fa-github"
-    url: "https://github.com/bastienwirtz/homer"
-    target: "_blank" # optional html a tag target attribute
-  - name: "Wiki"
-    icon: "fas fa-book"
-    url: "https://www.wikipedia.org/"
+# links:
+  # - name: "Contribute"
+  #   icon: "fab fa-github"
+  #   url: "https://github.com/bastienwirtz/homer"
+  #   target: "_blank" # optional html a tag target attribute
+  # - name: "Wiki"
+  #   icon: "fas fa-book"
+  #   url: "https://www.wikipedia.org/"
   # this will link to a second homer page that will load config from additionnal-page.yml and keep default config values as in config.yml file
   # see url field and assets/additionnal-page.yml.dist used in this example:
-  - name: "another page!"
-    icon: "fas fa-file-alt"
-    url: "#additionnal-page"
+  # - name: "another page!"
+  #   icon: "fas fa-file-alt"
+  #   url: "#additionnal-page"
 
 # Services
 # First level array represent a group.
 # Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
 services:
-  - name: "Applications"
-    icon: "fas fa-cloud"
+  - name: "Network"
+    icon: "fas fa-network-wired"
     items:
       - name: "Pi-hole"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/pihole.png"
         url: "https://pihole.lan/admin/"
+        target: "_blank"
         type: "PiHole"
+      - name: "SWAG Dashboard"
+        logo: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver-ls-logo.png"
+        url: "https://dashboard.lan/"
+        target: "_blank"
+  - name: "Applications"
+    icon: "fas fa-cloud"
+    items:
       - name: "Vaultwarden"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/bitwarden.png"
         url: "https://vaultwarden.{{ domain_name }}/"
+        target: "_blank"
         type: "Ping"
       - name: "Nextcloud"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/nextcloud.png"
         url: "https://nextcloud.{{ domain_name }}/"
+        target: "_blank"
         type: "Ping"
   - name: "Media"
     icon: "fas fa-photo-video"
@@ -89,20 +100,24 @@ services:
       - name: "Jellyfin"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/jellyfin.png"
         url: "https://jellyfin.{{ domain_name }}/"
-        type: "Ping"
+        target: "_blank"
       - name: "Radarr"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/radarr.png"
         url: "https://radarr.lan/"
-        type: "Ping"
+        target: "_blank"
+        apikey: "{{ radarr_api_key }}"
+        type: "Radarr"
       - name: "Sonarr"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/sonarr.png"
         url: "https://sonarr.lan/"
-        type: "Ping"
+        target: "_blank"
+        apikey: "{{ sonarr_api_key }}"
+        type: "Sonarr"
       - name: "Jackett"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/jackett.png"
         url: "https://jackett.lan/"
-        type: "Ping"
+        target: "_blank"
       - name: "qbittorrent"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/qbittorrent.png"
         url: "https://qbittorrent.lan/"
-        type: "Ping"
+        target: "_blank"
