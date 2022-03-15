@@ -1,0 +1,36 @@
+- name: Pull navidrome image
+  docker_image:
+    name: deluan/navidrome
+    source: pull
+    timeout: 300
+  tags: navidrome
+
+- name: Init navidrome
+  docker_container:
+    name: navidrome
+    image: deluan/navidrome
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+      ND_LOGLEVEL: info
+    volumes:
+      - /etc/navidrome/data:/data
+      - "{{ data_dir }}/Documents/Music:/music"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ navidrome_subnet_ip }}"
+  tags: navidrome
+
+- name: Enable navidrome upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/navidrome.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/navidrome.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: navidrome

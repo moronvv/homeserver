@@ -20,6 +20,8 @@
     volumes:
       - /etc/jackett/config:/config
       - "{{ data_dir }}/Downloads:/downloads"
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: "1"
     restart_policy: unless-stopped
     networks:
       - name: "{{ subnet_name }}"

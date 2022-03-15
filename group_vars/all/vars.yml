@@ -16,7 +16,7 @@ cloudflared_subnet_ip: 172.20.0.3
 pihole_subnet_ip: 172.20.0.4
 qbittorrent_subnet_ip: 172.20.0.5
 homer_subnet_ip: 172.20.0.6
-# cors_subnet_ip: 172.20.0.7
+lidarr_subnet_ip: 172.20.0.7
 wireguard_subnet_ip: 172.20.0.8
 vaultwarden_subnet_ip: 172.20.0.9
 watchtower_subnet_ip: 172.20.0.10
@@ -26,6 +26,7 @@ sonarr_subnet_ip: 172.20.0.13
 jellyfin_subnet_ip: 172.20.0.14
 nextcloud_mariadb_subnet_ip: 172.20.0.15
 nextcloud_subnet_ip: 172.20.0.16
+navidrome_subnet_ip: 172.20.0.17
 
 # vpn
 wireguard_subnet: 10.13.13.0

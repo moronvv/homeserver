@@ -47,6 +47,7 @@
     dest: /etc/swag/config/nginx/internal.conf
     content: |
       allow {{ external_ip }};
+      allow {{ vpn_ip }};
       allow {{ subnet_ip }};
       allow 192.168.1.0/24;
       deny all;
