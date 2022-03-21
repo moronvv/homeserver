@@ -27,6 +27,8 @@ jellyfin_subnet_ip: 172.20.0.14
 nextcloud_mariadb_subnet_ip: 172.20.0.15
 nextcloud_subnet_ip: 172.20.0.16
 navidrome_subnet_ip: 172.20.0.17
+prowlarr_subnet_ip: 172.20.0.18
+flaresolverr_subnet_ip: 172.20.0.19
 
 # vpn
 wireguard_subnet: 10.13.13.0

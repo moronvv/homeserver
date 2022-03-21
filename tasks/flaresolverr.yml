@@ -1,0 +1,23 @@
+- name: Pull flaresolverr image
+  docker_image:
+    name: ghcr.io/flaresolverr/flaresolverr
+    source: pull
+    timeout: 300
+  tags: flaresolverr
+
+- name: Init flaresolverr
+  docker_container:
+    name: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      LOG_LEVEL: info
+    ports:
+      - 8191:8191
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ flaresolverr_subnet_ip }}"
+  tags: flaresolverr

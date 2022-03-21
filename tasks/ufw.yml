@@ -51,6 +51,12 @@
     - "443"
   tags: ufw
 
+- name: Allow flaresolverr ports
+  community.general.ufw:
+    rule: allow
+    port: "8191"
+  tags: ufw
+
 - name: Allow raspotify ports
   community.general.ufw:
     rule: allow

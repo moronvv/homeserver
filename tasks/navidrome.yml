@@ -16,7 +16,11 @@
       PUID: "{{ puid }}"
       PGID: "{{ guid }}"
       TZ: "{{ timezone }}"
-      ND_LOGLEVEL: info
+      ND_SPOTIFY_ID: "{{ spotify_client_id }}"
+      ND_SPOTIFY_SECRET: "{{ spotify_client_secret }}"
+      ND_LASTFM_APIKEY: "{{ lastfm_api_key }}"
+      ND_LASTFM_SECRET: "{{ lastfm_secret }}"
+      ND_ENABLECOVERANIMATION: "false"
     volumes:
       - /etc/navidrome/data:/data
       - "{{ data_dir }}/Documents/Music:/music"
