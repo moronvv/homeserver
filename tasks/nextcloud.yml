@@ -48,7 +48,7 @@
       TZ: "{{ timezone }}"
     volumes:
       - /etc/nextcloud/config:/config
-      - "{{ data_dir }}:/data"
+      - "{{ data_dir }}/Documents/Nextcloud:/data"
     restart_policy: unless-stopped
     networks:
       - name: "{{ subnet_name }}"

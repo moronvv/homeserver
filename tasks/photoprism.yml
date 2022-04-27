@@ -1,0 +1,81 @@
+- name: Pull mariadb image
+  docker_image:
+    name: lscr.io/linuxserver/mariadb
+    source: pull
+    timeout: 300
+  tags: photoprism
+
+- name: Init MariaDB
+  docker_container:
+    name: photoprism-mariadb
+    image: lscr.io/linuxserver/mariadb
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+      MYSQL_ROOT_PASSWORD: "{{ photoprism_mariadb_root_password }}"
+      MYSQL_PASSWORD: "{{ photoprism_mariadb_password }}"
+      MYSQL_DATABASE: photoprism
+      MYSQL_USER: photoprism
+    volumes:
+      - /etc/photoprism_mariadb/config:/config
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ photoprism_mariadb_subnet_ip }}"
+  tags: photoprism
+
+- name: Pull photoprism image
+  docker_image:
+    name: photoprism/photoprism:latest
+    source: pull
+    timeout: 300
+  tags: photoprism
+
+- name: Init photoprism
+  docker_container:
+    name: photoprism
+    image: photoprism/photoprism:latest
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    security_opts:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    env:
+      PHOTOPRISM_ADMIN_PASSWORD: "{{ photoprism_admin_password }}"
+      PHOTOPRISM_UPLOAD_NSFW: "true"
+      PHOTOPRISM_DATABASE_DRIVER: "mysql"
+      PHOTOPRISM_DATABASE_SERVER: "{{ photoprism_mariadb_subnet_ip }}:3306"
+      PHOTOPRISM_DATABASE_NAME: "photoprism"
+      PHOTOPRISM_DATABASE_USER: "photoprism"
+      PHOTOPRISM_DATABASE_PASSWORD: "{{ photoprism_mariadb_password }}"
+    volumes:
+      - /etc/photoprism/storage:/photoprism/storage
+      - "{{ data_dir }}/tmp/import:/photoprism/import"
+      - "{{ data_dir }}/Documents/Photos:/photoprism/originals"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ photoprism_subnet_ip }}"
+  tags: photoprism
+
+- name: Enable photoprism upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/photoprism.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/photoprism.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: photoprism
+
+- name: Add cors config
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/photoprism.subdomain.conf
+    regexp: '^(?: *include /config/nginx/cors\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
+    replace: '        include /config/nginx/cors.conf;\n\1'
+  notify: Restart swag
+  tags: photoprism

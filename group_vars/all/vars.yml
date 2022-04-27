@@ -29,6 +29,8 @@ nextcloud_subnet_ip: 172.20.0.16
 navidrome_subnet_ip: 172.20.0.17
 prowlarr_subnet_ip: 172.20.0.18
 flaresolverr_subnet_ip: 172.20.0.19
+photoprism_mariadb_subnet_ip: 172.20.0.20
+photoprism_subnet_ip: 172.20.0.21
 
 # vpn
 wireguard_subnet: 10.13.13.0
