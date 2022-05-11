@@ -23,7 +23,7 @@
       - /dev/vcsm-cma:/dev/vcsm-cma
       - /dev/vchiq:/dev/vchiq
     volumes:
-      - /etc/jellyfin/config:/config
+      - "{{ data_dir }}/Applications/jellyfin/config:/config"
       - "{{ data_dir }}/Documents/TV:/tvshows"
       - "{{ data_dir }}/Documents/Movies:/movies"
       - /opt/vc/lib:/opt/vc/lib

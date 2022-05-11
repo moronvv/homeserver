@@ -25,5 +25,6 @@
     - import_tasks: tasks/nextcloud.yml
     - import_tasks: tasks/navidrome.yml
     - import_tasks: tasks/photoprism.yml
+    - import_tasks: tasks/mopidy.yml
   handlers:
     - import_tasks: handlers/main.yml

@@ -21,7 +21,7 @@
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
     volumes:
-      - /etc/mariadb/config:/config
+      - "{{ data_dir }}/Applications/nextcloud_mariadb/config:/config"
     restart_policy: unless-stopped
     networks:
       - name: "{{ subnet_name }}"
@@ -47,8 +47,10 @@
       PGID: "{{ guid }}"
       TZ: "{{ timezone }}"
     volumes:
-      - /etc/nextcloud/config:/config
-      - "{{ data_dir }}/Documents/Nextcloud:/data"
+      - "{{ data_dir }}/Applications/nextcloud/config:/config"
+      - "{{ data_dir }}/Documents/Cloud:/data"
+      - "{{ data_dir }}/Documents/Photos:/shared/photos"
+      - "{{ data_dir }}/Documents/Obsidian:/shared/obsidian"
     restart_policy: unless-stopped
     networks:
       - name: "{{ subnet_name }}"

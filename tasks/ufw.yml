@@ -71,6 +71,5 @@
     rule: allow
     port: "{{ item }}"
   loop:
-    - "{{ tor_or_port }}"
-    - "{{ tor_dir_port }}"
+    - "{{ tor_proxy_port }}"
   tags: ufw

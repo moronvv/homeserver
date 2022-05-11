@@ -7,7 +7,7 @@
 - name: Reload tor
   service:
     name: tor@default
-    state: reloaded
+    state: restarted
     enabled: yes
 
 - name: Restart swag

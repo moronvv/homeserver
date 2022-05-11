@@ -1,0 +1,11 @@
+Log notice file /var/log/tor/notices.log
+
+SocksPort 192.168.1.9:{{ tor_proxy_port }}
+SocksPolicy accept 192.168.1.0/24
+RunAsDaemon 1
+DataDirectory /var/lib/tor
+
+UseBridges 1  
+ClientTransportPlugin obfs4 exec /usr/bin/obfs4proxy managed
+
+{{ tor_bridges }}

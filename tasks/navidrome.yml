@@ -22,7 +22,7 @@
       ND_LASTFM_SECRET: "{{ lastfm_secret }}"
       ND_ENABLECOVERANIMATION: "false"
     volumes:
-      - /etc/navidrome/data:/data
+      - "{{ data_dir }}/Applications/navidrome/data:/data"
       - "{{ data_dir }}/Documents/Music:/music"
     restart_policy: unless-stopped
     networks:

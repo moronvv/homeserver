@@ -21,7 +21,7 @@
       MYSQL_DATABASE: photoprism
       MYSQL_USER: photoprism
     volumes:
-      - /etc/photoprism_mariadb/config:/config
+      - "{{ data_dir }}/Applications/photoprism_mariadb/config:/config"
     restart_policy: unless-stopped
     networks:
       - name: "{{ subnet_name }}"
@@ -48,14 +48,15 @@
     env:
       PHOTOPRISM_ADMIN_PASSWORD: "{{ photoprism_admin_password }}"
       PHOTOPRISM_UPLOAD_NSFW: "true"
+      PHOTOPRISM_ORIGINALS_LIMIT: "-1"
       PHOTOPRISM_DATABASE_DRIVER: "mysql"
       PHOTOPRISM_DATABASE_SERVER: "{{ photoprism_mariadb_subnet_ip }}:3306"
       PHOTOPRISM_DATABASE_NAME: "photoprism"
       PHOTOPRISM_DATABASE_USER: "photoprism"
       PHOTOPRISM_DATABASE_PASSWORD: "{{ photoprism_mariadb_password }}"
     volumes:
-      - /etc/photoprism/storage:/photoprism/storage
-      - "{{ data_dir }}/tmp/import:/photoprism/import"
+      - "{{ data_dir }}/Applications/photoprism/storage:/photoprism/storage"
+      - "{{ data_dir }}/Applications/photoprism/import:/photoprism/import"
       - "{{ data_dir }}/Documents/Photos:/photoprism/originals"
     restart_policy: unless-stopped
     networks:

@@ -6,6 +6,7 @@ timezone: Europe/Moscow
 network_interface: wlan0
 home_dir: /home/pi
 data_dir: /mnt/data
+internal_ip: 192.168.1.9
 
 # docker
 subnet_name: internal
@@ -47,6 +48,4 @@ smtp_host: smtp.gmail.com
 smtp_port: "587"
 
 # tor
-tor_or_port: "9001"
-tor_dir_port: "9030"
-tor_control_port: "9051"
+tor_proxy_port: "9050"

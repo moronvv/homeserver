@@ -2,22 +2,13 @@
   package:
     name:
       - tor
-      - nyx
+      - obfs4proxy
     state: latest
   tags: tor
 
 - name: Tune tor config file
-  copy:
+  template:
+    src: templates/proxy_torrc.j2
     dest: /etc/tor/torrc
-    content: |
-      ORPort {{ tor_or_port }} IPv4Only
-      DirPort {{ tor_dir_port }}
-      ControlPort {{ tor_control_port }}
-      SocksPort 0
-      ExitRelay 0
-      Log notice file /var/log/tor/notices.log
-      HashedControlPassword {{ tor_hashed_control_password }}
-      Nickname {{ tor_nickname }}
-      ContactInfo {{ tor_email }}
   notify: Reload tor
   tags: tor
