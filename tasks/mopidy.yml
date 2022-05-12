@@ -1,0 +1,60 @@
+- name: Install Mopidy Debian packages
+  package:
+    name:
+      - mopidy
+      - python3-pip
+      - gstreamer1.0-plugins-bad
+    state: latest
+  tags: mopidy
+
+- name: Install Mopidy Python3 packages
+  pip:
+    name:
+      - Mopidy-Iris
+      - Mopidy-Local
+      - Mopidy-Scrobbler
+    state: present
+  tags: mopidy
+
+- name: Ensure Iris has access to install itself
+  lineinfile:
+    path: /etc/sudoers
+    regexp: "^mopidy"
+    line: "mopidy ALL=NOPASSWD: /usr/local/lib/python3.9/dist-packages/mopidy_iris/system.sh"
+  tags: mopidy
+
+- name: Install /etc/mopidy/mopidy.conf
+  template:
+    src: templates/mopidy.conf.j2
+    dest: /etc/mopidy/mopidy.conf
+    owner: mopidy
+    group: root
+    mode: 0640
+  notify: Restart mopidy
+  tags: mopidy
+
+- name: Set swag proxy for mopidy
+  copy:
+    dest: /etc/swag/config/nginx/proxy-confs/mopidy.subdomain.conf
+    content: |
+      server {
+        listen 443 ssl;
+        listen [::]:443 ssl;
+
+        server_name mopidy.*;
+
+        include /config/nginx/ssl.conf;
+
+        client_max_body_size 0;
+
+        location / {
+            include /config/nginx/proxy.conf;
+            include /config/nginx/resolver.conf;
+            set $upstream_app {{ subnet_gateway }};
+            set $upstream_port 6680;
+            set $upstream_proto http;
+            proxy_pass $upstream_proto://$upstream_app:$upstream_port;
+        }
+      }
+  notify: Restart swag
+  tags: mopidy

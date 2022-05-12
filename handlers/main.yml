@@ -19,3 +19,9 @@
   docker_container:
     name: wireguard
     restart: yes
+
+- name: Restart mopidy
+  service:
+    name: mopidy
+    state: restarted
+    enabled: yes
