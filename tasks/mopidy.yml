@@ -13,6 +13,7 @@
       - Mopidy-Iris
       - Mopidy-Local
       - Mopidy-Scrobbler
+      - Mopidy-TuneIn
     state: present
   tags: mopidy
 
