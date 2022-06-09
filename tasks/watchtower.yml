@@ -16,6 +16,7 @@
       TZ: "{{ timezone }}"
       WATCHTOWER_NO_STARTUP_MESSAGE: "true"
       WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_SCHEDULE: "0 0 6 * * *"
       WATCHTOWER_NOTIFICATIONS: email
       WATCHTOWER_NOTIFICATION_EMAIL_FROM: "{{ smtp_email }}"
       WATCHTOWER_NOTIFICATION_EMAIL_TO: "{{ email }}"

@@ -50,7 +50,9 @@
       - "{{ data_dir }}/Applications/nextcloud/config:/config"
       - "{{ data_dir }}/Documents/Cloud:/data"
       - "{{ data_dir }}/Documents/Photos:/shared/photos"
-      - "{{ data_dir }}/Documents/Obsidian:/shared/obsidian"
+      - "{{ data_dir }}/Documents/Movies:/shared/movies"
+      - "{{ data_dir }}/Documents/TV:/shared/tv"
+      - "{{ data_dir }}/Documents/Music:/shared/music"
     restart_policy: unless-stopped
     networks:
       - name: "{{ subnet_name }}"
