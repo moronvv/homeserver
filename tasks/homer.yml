@@ -10,6 +10,8 @@
     name: homer
     image: b4bz/homer:latest
     state: started
+    env:
+      INIT_ASSETS: "0"
     volumes:
       - /etc/homer/assets:/www/assets
     restart_policy: unless-stopped

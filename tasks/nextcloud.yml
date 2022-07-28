@@ -53,6 +53,7 @@
       - "{{ data_dir }}/Documents/Movies:/shared/movies"
       - "{{ data_dir }}/Documents/TV:/shared/tv"
       - "{{ data_dir }}/Documents/Music:/shared/music"
+      - "{{ data_dir }}/Documents/Books:/shared/books"
     restart_policy: unless-stopped
     networks:
       - name: "{{ subnet_name }}"

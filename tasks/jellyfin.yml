@@ -26,6 +26,7 @@
       - "{{ data_dir }}/Applications/jellyfin/config:/config"
       - "{{ data_dir }}/Documents/TV:/tvshows"
       - "{{ data_dir }}/Documents/Movies:/movies"
+      - "{{ data_dir }}/Documents/Books:/books"
       - /opt/vc/lib:/opt/vc/lib
     restart_policy: unless-stopped
     networks:

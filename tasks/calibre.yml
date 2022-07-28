@@ -1,0 +1,74 @@
+- name: Pull calibre image
+  docker_image:
+    name: lscr.io/linuxserver/calibre:arm64v8-latest
+    source: pull
+    timeout: 300
+  tags: calibre
+
+- name: Init calibre
+  docker_container:
+    name: calibre
+    image: lscr.io/linuxserver/calibre:arm64v8-latest
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+      PASSWORD: "{{ calibre_password }}"
+    volumes:
+      - /etc/calibre/config:/config
+      - "{{ data_dir }}/Documents/Books:/books"
+      - "{{ data_dir }}/Downloads:/downloads"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ calibre_subnet_ip }}"
+  tags: calibre
+
+- name: Enable calibre upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/calibre.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/calibre.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: calibre
+
+- name: Pull calibre-web image
+  docker_image:
+    name: lscr.io/linuxserver/calibre-web
+    source: pull
+    timeout: 300
+  tags: calibre-web
+
+- name: Init calibre-web
+  docker_container:
+    name: calibre-web
+    image: lscr.io/linuxserver/calibre-web
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+    volumes:
+      - /etc/calibre-web/config:/config
+      - "{{ data_dir }}/Documents/Books:/books"
+      - "{{ data_dir }}/Downloads:/downloads"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ calibre_web_subnet_ip }}"
+  tags: calibre-web
+
+- name: Enable calibre-web upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/calibre-web.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/calibre-web.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: calibre-web
