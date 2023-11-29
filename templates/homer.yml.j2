@@ -77,6 +77,12 @@ services:
         url: "https://pihole.{{ domain_name }}/admin/"
         target: "_blank"
         type: "PiHole"
+      - name: "Healthchecks"
+        logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/healthchecks.png"
+        url: "https://healthchecks.{{ domain_name }}/"
+        type: "Healthchecks"
+        apikey: "{{ healthchecks_api_key_ro }}"
+        target: "_blank"
       - name: "SWAG Dashboard"
         logo: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver-ls-logo.png"
         url: "https://dashboard.{{ domain_name }}/"
@@ -102,6 +108,9 @@ services:
       - name: "qBittorrent"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/qbittorrent.png"
         url: "https://qbittorrent.{{ domain_name }}/"
+        type: "qBittorrent"
+        rateInterval: 2000
+        torrentInterval: 5000
         target: "_blank"
       - name: "Calibre-Web"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/calibreweb.png"

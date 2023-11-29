@@ -35,6 +35,7 @@ photoprism_subnet_ip: 172.20.0.21
 readarr_subnet_ip: 172.20.0.22
 calibre_subnet_ip: 172.20.0.23
 calibre_web_subnet_ip: 172.20.0.24
+healthchecks_subnet_ip: 172.20.0.25
 
 # vpn
 wireguard_subnet: 10.13.13.0

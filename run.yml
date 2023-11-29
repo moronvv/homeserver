@@ -28,5 +28,6 @@
     - import_tasks: tasks/photoprism.yml
     - import_tasks: tasks/mopidy.yml
     - import_tasks: tasks/calibre.yml
+    - import_tasks: tasks/healthchecks.yml
   handlers:
     - import_tasks: handlers/main.yml
