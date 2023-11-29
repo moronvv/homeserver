@@ -29,5 +29,6 @@
     - import_tasks: tasks/mopidy.yml
     - import_tasks: tasks/calibre.yml
     - import_tasks: tasks/healthchecks.yml
+    - import_tasks: tasks/portainer.yml
   handlers:
     - import_tasks: handlers/main.yml
