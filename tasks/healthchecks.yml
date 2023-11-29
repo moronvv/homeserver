@@ -16,6 +16,7 @@
       PUID: "{{ puid }}"
       PGID: "{{ guid }}"
       TZ: "{{ timezone }}"
+      DEBUG: "False"
       SITE_ROOT: "https://healthchecks.{{ domain_name }}"
       SITE_NAME: "HealthChecks"
       DEFAULT_FROM_EMAIL: "{{ smtp_email }}"
@@ -23,7 +24,7 @@
       EMAIL_PORT: "{{ smtp_port }}"
       EMAIL_HOST_USER: "{{ smtp_email }}"
       EMAIL_HOST_PASSWORD: "{{ smtp_app_password }}"
-      EMAIL_USE_TLS: "False"
+      EMAIL_USE_TLS: "True"
       SUPERUSER_EMAIL: "{{ email }}"
       SUPERUSER_PASSWORD: "{{ healthchecks_password }}"
     volumes:
