@@ -25,6 +25,7 @@
       EMAIL: "{{ email }}"
       DUCKDNSTOKEN: "{{ duckdns_token }}"
       ONLY_SUBDOMAINS: "true"
+      DOCKER_MODS: linuxserver/mods:swag-dashboard
     ports:
       - 443:443
       - 80:80
@@ -69,4 +70,21 @@
     insertafter: EOF
     line: add_header X-Robots-Tag "noindex, nofollow, nosnippet, noarchive";
   notify: Restart swag
+  tags: web_server
+
+- name: Enable swag dashboard upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/dashboard.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/dashboard.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: web_server
+
+- name: Add external ip
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/dashboard.subdomain.conf
+    regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *deny all;\n)'
+    replace: '        include /config/nginx/internal.conf;\n\1'
+  # notify: Restart swag
   tags: web_server
