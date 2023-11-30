@@ -10,7 +10,7 @@
     # - import_tasks: tasks/spotify.yml
     - import_tasks: tasks/docker_networks.yml
     - import_tasks: tasks/watchtower.yml
-    - import_tasks: tasks/web_server.yml
+    - import_tasks: tasks/swag.yml
     # - import_tasks: tasks/vpn.yml
     - import_tasks: tasks/pihole.yml
     - import_tasks: tasks/homer.yml
@@ -22,7 +22,7 @@
     - import_tasks: tasks/radarr.yml
     - import_tasks: tasks/sonarr.yml
     - import_tasks: tasks/lidarr.yml
-    - import_tasks: tasks/readarr.yml
+    # - import_tasks: tasks/readarr.yml
     - import_tasks: tasks/nextcloud.yml
     - import_tasks: tasks/navidrome.yml
     - import_tasks: tasks/photoprism.yml

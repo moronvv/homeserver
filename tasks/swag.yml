@@ -3,7 +3,7 @@
     name: lscr.io/linuxserver/swag
     source: pull
     timeout: 300
-  tags: web_server
+  tags: swag
 
 - name: Init swag
   docker_container:
@@ -35,12 +35,12 @@
     networks:
       - name: "{{ subnet_name }}"
         ipv4_address: "{{ swag_subnet_ip }}"
-  tags: web_server
+  tags: swag
 
 - name: Wait until swag nginx directory exists
   wait_for:
     path: /etc/swag/config/nginx/
-  tags: web_server
+  tags: swag
 
 - name: Create nginx config to block external ips
   copy:
@@ -52,7 +52,7 @@
       allow 192.168.1.0/24;
       deny all;
   notify: Restart swag
-  tags: web_server
+  tags: swag
 
 - name: Create nginx config for cors
   copy:
@@ -62,7 +62,7 @@
         add_header "Access-Control-Allow-Origin" *;
       }
   notify: Restart swag
-  tags: web_server
+  tags: swag
 
 - name: Hide apps from search engines
   lineinfile:
@@ -70,7 +70,7 @@
     insertafter: EOF
     line: add_header X-Robots-Tag "noindex, nofollow, nosnippet, noarchive";
   notify: Restart swag
-  tags: web_server
+  tags: swag
 
 - name: Enable swag dashboard upstream in swag
   copy:
@@ -79,12 +79,12 @@
     remote_src: yes
     force: no
   notify: Restart swag
-  tags: web_server
+  tags: swag
 
 - name: Add external ip
   replace:
     path: /etc/swag/config/nginx/proxy-confs/dashboard.subdomain.conf
     regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *deny all;\n)'
     replace: '        include /config/nginx/internal.conf;\n\1'
-  # notify: Restart swag
-  tags: web_server
+  notify: Restart swag
+  tags: swag
