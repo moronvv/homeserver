@@ -38,10 +38,15 @@ calibre_web_subnet_ip: 172.20.0.24
 healthchecks_subnet_ip: 172.20.0.25
 portainer_subnet_ip: 172.20.0.26
 netdata_subnet_ip: 172.20.0.27
+syncthing_subnet_ip: 172.20.0.28
 
 # vpn
 wireguard_subnet: 10.13.13.0
 wireguard_port: "51820"
+
+# syncthing
+syncthing_listening_port: "22000"
+syncthing_protocol_discovery_port: "21027"
 
 # raspotify
 librespot_bitrate: "320"

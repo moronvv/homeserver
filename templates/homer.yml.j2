@@ -69,8 +69,8 @@ colors:
 # First level array represent a group.
 # Leave only a "items" key if not using group (group name, icon & tagstyle are optional, section separation will not be displayed).
 services:
-  - name: "Network"
-    icon: "fas fa-network-wired"
+  - name: "Monitoring"
+    icon: "fas fa-server"
     items:
       - name: "SWAG Dashboard"
         logo: "https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver-ls-logo.png"
@@ -103,9 +103,9 @@ services:
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/nextcloud.png"
         url: "https://nextcloud.{{ domain_name }}/"
         target: "_blank"
-      - name: "Photoprism"
-        logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/photoprism.png"
-        url: "https://photoprism.{{ domain_name }}/"
+      - name: "Syncthing"
+        logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/syncthing.png"
+        url: "https://syncthing.{{ domain_name }}/"
         target: "_blank"
       - name: "qBittorrent"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/qbittorrent.png"
@@ -118,6 +118,10 @@ services:
   - name: "Media"
     icon: "fas fa-photo-video"
     items:
+      - name: "Photoprism"
+        logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/photoprism.png"
+        url: "https://photoprism.{{ domain_name }}/"
+        target: "_blank"
       - name: "Jellyfin"
         logo: "https://raw.githubusercontent.com/NX211/homer-icons/master/png/jellyfin.png"
         url: "https://jellyfin.{{ domain_name }}/"

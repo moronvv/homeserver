@@ -31,5 +31,6 @@
     - import_tasks: tasks/healthchecks.yml
     - import_tasks: tasks/portainer.yml
     - import_tasks: tasks/netdata.yml
+    - import_tasks: tasks/syncthing.yml
   handlers:
     - import_tasks: handlers/main.yml

@@ -1,0 +1,47 @@
+- name: Pull syncthing image
+  docker_image:
+    name: lscr.io/linuxserver/syncthing
+    source: pull
+    timeout: 300
+  tags: syncthing
+
+- name: Init syncthing
+  docker_container:
+    name: syncthing
+    image: lscr.io/linuxserver/syncthing
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+    volumes:
+      - /etc/syncthing/config:/config
+      - "{{ data_dir }}/Documents/Sync:/sync"
+    ports:
+      - "{{ syncthing_listening_port }}:{{ syncthing_listening_port }}/tcp"
+      - "{{ syncthing_listening_port }}:{{ syncthing_listening_port }}/udp"
+      - "{{ syncthing_protocol_discovery_port }}:{{ syncthing_protocol_discovery_port }}/udp"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ syncthing_subnet_ip }}"
+  tags: syncthing
+
+- name: Enable syncthing upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/syncthing.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/syncthing.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: syncthing
+
+- name: Block external ips
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/syncthing.subdomain.conf
+    regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
+    replace: '        include /config/nginx/internal.conf;\n\1'
+  notify: Restart swag
+  tags: syncthing
