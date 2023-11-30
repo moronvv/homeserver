@@ -1,0 +1,64 @@
+- name: Pull netdata image
+  docker_image:
+    name: netdata/netdata
+    source: pull
+    timeout: 300
+  tags: netdata
+
+- name: Create netdatalib volume
+  docker_volume:
+    name: netdatalib
+  tags: netdata
+
+- name: Create netdatacache volume
+  docker_volume:
+    name: netdatacache
+  tags: netdata
+
+- name: Init netdata
+  docker_container:
+    name: netdata
+    image: netdata/netdata
+    pid_mode: host
+    capabilities:
+      - sys_ptrace
+      - sys_admin
+    security_opts:
+      - apparmor:unconfined
+    dns_servers:
+      - "{{ pihole_subnet_ip }}"
+    state: started
+    volumes:
+      - /etc/netdata:/etc/netdata
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /var/log:/host/var/log:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ subnet_name }}"
+        ipv4_address: "{{ netdata_subnet_ip }}"
+  tags: netdata
+
+- name: Enable netdata upstream in swag
+  copy:
+    src: /etc/swag/config/nginx/proxy-confs/netdata.subdomain.conf.sample
+    dest: /etc/swag/config/nginx/proxy-confs/netdata.subdomain.conf
+    remote_src: yes
+    force: no
+  notify: Restart swag
+  tags: netdata
+
+- name: Block external ips
+  replace:
+    path: /etc/swag/config/nginx/proxy-confs/netdata.subdomain.conf
+    regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
+    replace: '        include /config/nginx/internal.conf;\n\1'
+  notify: Restart swag
+  tags: netdata
