@@ -30,7 +30,7 @@
 
 - name: Pull nextcloud image
   docker_image:
-    name: lscr.io/linuxserver/nextcloud:php8
+    name: lscr.io/linuxserver/nextcloud
     source: pull
     timeout: 300
   tags: nextcloud
@@ -38,7 +38,7 @@
 - name: Init nextcloud
   docker_container:
     name: nextcloud
-    image: lscr.io/linuxserver/nextcloud:php8
+    image: lscr.io/linuxserver/nextcloud
     dns_servers:
       - "{{ pihole_subnet_ip }}"
     state: started
@@ -66,13 +66,5 @@
     dest: /etc/swag/config/nginx/proxy-confs/nextcloud.subdomain.conf
     remote_src: yes
     force: no
-  notify: Restart swag
-  tags: nextcloud
-
-- name: Add cors config
-  replace:
-    path: /etc/swag/config/nginx/proxy-confs/nextcloud.subdomain.conf
-    regexp: '^(?: *include /config/nginx/cors\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
-    replace: '        include /config/nginx/cors.conf;\n\1'
   notify: Restart swag
   tags: nextcloud
