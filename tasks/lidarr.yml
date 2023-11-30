@@ -38,7 +38,7 @@
 - name: Block external ips
   replace:
     path: /etc/swag/config/nginx/proxy-confs/lidarr.subdomain.conf
-    regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *include /config/nginx/cors\.conf;\n)'
+    regexp: '^(?: *include /config/nginx/internal\.conf;\n)?( *include /config/nginx/proxy\.conf;\n)'
     replace: '        include /config/nginx/internal.conf;\n\1'
   notify: Restart swag
   tags: lidarr
