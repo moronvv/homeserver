@@ -58,3 +58,16 @@
     replace: '        include /config/nginx/internal.conf;\n\1'
   notify: Restart swag
   tags: vaultwarden
+
+- name: Install packages for backups
+  package:
+    name:
+      - sqlite3
+    state: latest
+  tags: vaultwarden
+
+- name: Create dir for backups
+  file:
+    path: /etc/vaultwarden/backups
+    state: directory
+  tags: vaultwarden
