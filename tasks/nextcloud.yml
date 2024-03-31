@@ -10,7 +10,7 @@
     name: nextcloud-mariadb
     image: lscr.io/linuxserver/mariadb
     dns_servers:
-      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     env:
       PUID: "{{ puid }}"
@@ -40,7 +40,7 @@
     name: nextcloud
     image: lscr.io/linuxserver/nextcloud
     dns_servers:
-      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     env:
       PUID: "{{ puid }}"

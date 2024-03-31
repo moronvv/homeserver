@@ -10,7 +10,7 @@
     name: flaresolverr
     image: ghcr.io/flaresolverr/flaresolverr
     dns_servers:
-      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     env:
       LOG_LEVEL: info

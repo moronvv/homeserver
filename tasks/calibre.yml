@@ -10,7 +10,7 @@
     name: calibre
     image: lscr.io/linuxserver/calibre:arm64v8-latest
     dns_servers:
-      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     env:
       PUID: "{{ puid }}"
@@ -48,7 +48,7 @@
     name: calibre-web
     image: lscr.io/linuxserver/calibre-web
     dns_servers:
-      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     env:
       PUID: "{{ puid }}"

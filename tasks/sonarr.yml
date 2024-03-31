@@ -10,7 +10,7 @@
     name: sonarr
     image: lscr.io/linuxserver/sonarr
     dns_servers:
-      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     env:
       PUID: "{{ puid }}"

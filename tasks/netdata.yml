@@ -26,7 +26,7 @@
     security_opts:
       - apparmor:unconfined
     dns_servers:
-      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     volumes:
       - /etc/netdata:/etc/netdata

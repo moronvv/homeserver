@@ -10,7 +10,7 @@
     name: photoprism-mariadb
     image: lscr.io/linuxserver/mariadb
     dns_servers:
-      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     env:
       PUID: "{{ puid }}"
@@ -40,7 +40,7 @@
     name: photoprism
     image: photoprism/photoprism:latest
     dns_servers:
-      - "{{ pihole_subnet_ip }}"
+      - 1.1.1.1
     state: started
     security_opts:
       - seccomp:unconfined
