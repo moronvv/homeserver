@@ -3,34 +3,20 @@
   become: yes
   tasks:
     - import_tasks: tasks/essential.yml
-    - import_tasks: tasks/ufw.yml
-    - import_tasks: tasks/mail.yml
-    - import_tasks: tasks/autoupgrade.yml
-    # - import_tasks: tasks/tor.yml
-    # - import_tasks: tasks/spotify.yml
+    # - import_tasks: tasks/autoupgrade.yml
+    # - import_tasks: tasks/ufw.yml
+    - import_tasks: tasks/docker.yml
     - import_tasks: tasks/docker_networks.yml
-    - import_tasks: tasks/watchtower.yml
     - import_tasks: tasks/swag.yml
-    # - import_tasks: tasks/vpn.yml
-    - import_tasks: tasks/pihole.yml
-    - import_tasks: tasks/homer.yml
-    - import_tasks: tasks/vaultwarden.yml
+    - import_tasks: tasks/portainer.yml
     - import_tasks: tasks/torrent.yml
     - import_tasks: tasks/flaresolverr.yml
     - import_tasks: tasks/jackett.yml
-    - import_tasks: tasks/jellyfin.yml
     - import_tasks: tasks/radarr.yml
     - import_tasks: tasks/sonarr.yml
     - import_tasks: tasks/lidarr.yml
-    # - import_tasks: tasks/readarr.yml
-    - import_tasks: tasks/nextcloud.yml
     - import_tasks: tasks/navidrome.yml
-    - import_tasks: tasks/photoprism.yml
-    # - import_tasks: tasks/mopidy.yml
-    - import_tasks: tasks/calibre.yml
-    - import_tasks: tasks/healthchecks.yml
-    - import_tasks: tasks/portainer.yml
-    - import_tasks: tasks/netdata.yml
-    - import_tasks: tasks/syncthing.yml
+    - import_tasks: tasks/watchtower.yml
+    # - import_tasks: tasks/healthchecks.yml
   handlers:
     - import_tasks: handlers/main.yml

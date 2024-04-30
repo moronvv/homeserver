@@ -4,24 +4,18 @@
     state: restarted
     enabled: yes
 
-- name: Reload tor
-  service:
-    name: tor@default
-    state: restarted
-    enabled: yes
-
 - name: Restart swag
   docker_container:
     name: swag
     restart: yes
-
-- name: Restart wireguard
-  docker_container:
-    name: wireguard
-    restart: yes
-
-- name: Restart mopidy
-  service:
-    name: mopidy
-    state: restarted
-    enabled: yes
+    env:
+      PUID: "{{ puid }}"
+      PGID: "{{ guid }}"
+      TZ: "{{ timezone }}"
+      URL: "{{ domain_name }}"
+      VALIDATION: duckdns
+      SUBDOMAINS: wildcard
+      EMAIL: "{{ email }}"
+      DUCKDNSTOKEN: "{{ duckdns_token }}"
+      ONLY_SUBDOMAINS: "true"
+      DOCKER_MODS: linuxserver/mods:swag-dashboard

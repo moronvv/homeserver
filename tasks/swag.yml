@@ -1,3 +1,4 @@
+---
 - name: Pull swag image
   docker_image:
     name: lscr.io/linuxserver/swag
@@ -69,6 +70,11 @@
     insertafter: EOF
     line: add_header X-Robots-Tag "noindex, nofollow, nosnippet, noarchive";
   notify: Restart swag
+  tags: swag
+
+- name: Wait until swag dashboard conf sample file exists
+  wait_for:
+    path: /etc/swag/config/nginx/proxy-confs/dashboard.subdomain.conf.sample
   tags: swag
 
 - name: Enable swag dashboard upstream in swag

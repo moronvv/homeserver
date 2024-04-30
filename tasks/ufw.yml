@@ -18,28 +18,10 @@
     enabled: yes
   tags: ufw
 
-- name: Enable UFW
-  community.general.ufw:
-    state: enabled
-  tags: ufw
-
 - name: Allow ssh in UFW
   community.general.ufw:
     rule: allow
     name: OpenSSH
-  tags: ufw
-
-- name: Allow dns in UFW
-  community.general.ufw:
-    rule: allow
-    name: DNS
-  tags: ufw
-
-- name: Allow wireguard ports
-  community.general.ufw:
-    rule: allow
-    port: "{{ wireguard_port }}"
-    proto: udp
   tags: ufw
 
 - name: Allow web server ports
@@ -57,19 +39,24 @@
     port: "8191"
   tags: ufw
 
-- name: Allow syncthing ports (tcp)
+# - name: Allow syncthing ports (tcp)
+#   community.general.ufw:
+#     rule: allow
+#     proto: tcp
+#     port: "{{ syncthing_listening_port }}"
+#   tags: ufw
+#
+# - name: Allow syncthing ports (udp)
+#   community.general.ufw:
+#     rule: allow
+#     proto: udp
+#     port: "{{ item }}"
+#   loop:
+#     - "{{ syncthing_listening_port }}"
+#     - "{{ syncthing_protocol_discovery_port }}"
+#   tags: ufw
+#
+- name: Enable UFW
   community.general.ufw:
-    rule: allow
-    proto: tcp
-    port: "{{ syncthing_listening_port }}"
-  tags: ufw
-
-- name: Allow syncthing ports (udp)
-  community.general.ufw:
-    rule: allow
-    proto: udp
-    port: "{{ item }}"
-  loop:
-    - "{{ syncthing_listening_port }}"
-    - "{{ syncthing_protocol_discovery_port }}"
+    state: enabled
   tags: ufw

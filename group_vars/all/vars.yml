@@ -5,8 +5,7 @@ guid: "1000"
 timezone: Europe/Moscow
 network_interface: wlan0
 home_dir: /home/pi
-data_dir: /mnt/data
-internal_ip: 192.168.1.9
+data_dir: /srv/dev-disk-by-uuid-352f5450-9715-4a4e-9dad-d4c3629205fd/data
 
 # docker
 subnet_name: internal
@@ -40,23 +39,10 @@ netdata_subnet_ip: 172.20.0.27
 syncthing_subnet_ip: 172.20.0.28
 swag_subnet_ip: 172.20.0.29
 
-# vpn
-wireguard_subnet: 10.13.13.0
-wireguard_port: "51820"
-
 # syncthing
 syncthing_listening_port: "22000"
 syncthing_protocol_discovery_port: "21027"
 
-# raspotify
-librespot_bitrate: "320"
-librespot_control_port: "4070"
-librespot_zeroconf_port: "4071"
-output_device: iec958:CARD=MQA,DEV=0
-
 # mail
 smtp_host: smtp.gmail.com
 smtp_port: "587"
-
-# tor
-tor_proxy_port: "9050"
